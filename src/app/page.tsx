@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-const backgrounds = ["back1.JPG", "back2.JPG", "back3.JPG", "back4.JPG"];
+const backgrounds = [
+  "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3738967/0459ed5c-400b-8209-4ad0-05763bd95d1d.jpeg",
+  "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3738967/48ca9627-252b-ed3e-9d1a-15610cde7726.jpeg",
+  "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3738967/aa6fedb7-5c2d-e007-14a2-60c773e23ba3.jpeg",
+  "https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/3738967/40969b76-9644-eddb-2aed-433e1c9a1acc.jpeg",
+];
 
 const containerVariants = {
   hidden: { opacity: 0 },
