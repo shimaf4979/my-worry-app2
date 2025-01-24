@@ -5,11 +5,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "CRTI 理系学生の心の声",
-  description: "This is my website description.",
+  description:
+    "理系大学生が抱える心の声を汲み取り、ベストな解決策を提案します！",
   openGraph: {
     title: "CRTI 理系学生の心の声",
-    description: "理系学生の心の声を聞くアプリ",
-    url: "http://localhost:3000/",
+    description:
+      "理系大学生が抱える心の声を汲み取り、ベストな解決策を提案します！",
+    url: "https://my-worry-app2-delta.vercel.app/",
     images: [
       {
         url: "ogp1.png",

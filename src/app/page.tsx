@@ -1,18 +1,17 @@
-// app/page.tsx
 "use client";
 
-import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
+const backgrounds = ["back1.JPG", "back2.JPG", "back3.JPG", "back4.JPG"];
 
 const containerVariants = {
-  hidden: { opacity: 0, y: 50 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
     transition: {
-      duration: 0.5,
       staggerChildren: 0.1,
     },
   },
@@ -23,47 +22,93 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.3 },
+    transition: { type: "spring", stiffness: 100 },
   },
 };
 
 export default function Home() {
+  const [currentBg, setCurrentBg] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % backgrounds.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <main className='min-h-screen p-4 bg-gray-50'>
+    <main className='min-h-screen relative'>
+      <AnimatePresence mode='wait'>
+        <motion.div
+          key={currentBg}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1 }}
+          className='absolute inset-0 bg-cover bg-center bg-no-repeat'
+          style={{ backgroundImage: `url(${backgrounds[currentBg]})` }}
+        />
+      </AnimatePresence>
+
+      {/* オーバーレイ */}
+      <div className='absolute inset-0 bg-black/40' />
+
       <motion.div
-        className='max-w-md mx-auto space-y-4'
+        className='relative z-10 max-w-md mx-auto px-4 py-12 min-h-screen flex flex-col justify-center'
         variants={containerVariants}
         initial='hidden'
         animate='visible'
       >
-        <Card className='p-4 bg-white shadow-sm'>
-          <motion.h1
-            variants={itemVariants}
-            className='text-2xl font-bold text-center text-gray-800'
-          >
-            理系大学生の悩み診断
-          </motion.h1>
-          <motion.p
-            variants={itemVariants}
-            className='text-center text-gray-600 mt-2'
-          >
-            あなたの悩みの優先順位を分析します
-          </motion.p>
-        </Card>
+        <motion.section
+          className='text-center space-y-6 mb-8'
+          variants={itemVariants}
+        >
+          <h1 className='text-3xl font-bold text-white'>理系大学生の皆さん</h1>
+          <p className='text-xl text-gray-200'>こんな悩み、ありませんか？</p>
+          <p className='text-2xl font-medium text-white bg-black/30 p-4 rounded-lg inline-block'>
+            悩みがモヤモヤしている。 どう解決しようか。
+          </p>
+        </motion.section>
 
-        <motion.div variants={itemVariants}>
-          <Link href='/diagnosis'>
-            <Button className='w-full p-6 text-lg'>診断を始める</Button>
+        <motion.section
+          className='bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 mb-8'
+          variants={itemVariants}
+        >
+          <h2 className='text-xl font-bold text-center text-gray-800 mb-2'>
+            あなたの悩みを10問で特定。
+          </h2>
+          <h2 className='text-xl font-bold text-center text-gray-800 mb-2'>
+            ベストな解決策を提案します！
+          </h2>
+          <p className='text-gray-700'>悩みといっても、人それぞれ。</p>
+          <p className='text-gray-700'>お金、時間、友達、なんだろう...</p>
+          <p className='text-gray-700'>
+            結局漠然として、何に追われてるかもわからない...
+          </p>
+        </motion.section>
+
+        <motion.div className='flex flex-col space-y-4' variants={itemVariants}>
+          <Link href='/diagnosis' className='block'>
+            <Button className='w-full bg-white/90 hover:bg-white text-gray-800 font-bold py-4 rounded-full text-lg transition-all duration-300'>
+              今すぐ開始する
+            </Button>
           </Link>
-        </motion.div>
-
-        <motion.div variants={itemVariants}>
-          <Link href='/statistics'>
-            <Button variant='outline' className='w-full p-6 text-lg'>
-              みんなの診断結果を見る
+          <Link href='/statistics' className='block'>
+            <Button
+              variant='outline'
+              className='w-full bg-black/50 text-white hover:bg-black/70 font-bold py-4 rounded-full text-lg transition-all duration-300'
+            >
+              みんなの回答を見る
             </Button>
           </Link>
         </motion.div>
+
+        {/* <motion.footer
+          className='text-center text-white mt-8'
+          variants={itemVariants}
+        >
+          <p>ぜひお試しください！</p>
+        </motion.footer> */}
       </motion.div>
     </main>
   );

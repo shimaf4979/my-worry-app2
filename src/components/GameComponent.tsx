@@ -155,7 +155,7 @@ export default function GameComponent({
               </h2>
               {selectedOrder.length > 0 && (
                 <Button
-                  variant='outline'
+                  variant='destructive'
                   size='sm'
                   onClick={handleReset}
                   className='text-sm hover:bg-red-50'
