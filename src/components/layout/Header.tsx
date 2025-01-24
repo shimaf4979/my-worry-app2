@@ -9,7 +9,7 @@ import { Menu, X } from "lucide-react";
 const menuItems = [
   { href: "/", label: "トップページ" },
   { href: "/statistics", label: "みんなの分布" },
-  { href: "/about", label: "開発者" },
+  { href: "https://github.com/shimaf4979", label: "開発者" },
 ];
 
 export function Header() {

@@ -148,17 +148,16 @@ export default function GameComponent({
       >
         <Card className='p-6'>
           <div className='mb-6'>
-            <div className='flex justify-between items-center mb-2'>
-              <h2 className='text-xl font-bold'>
-                {gameState.preliminaryRound ? "予選" : "決勝"} - 質問{" "}
-                {gameState.currentQuestion + 1}/10
+            <div className='flex justify-between items-center my-2'>
+              <h2 className='text-xl font-bold p-3'>
+                質問 - {gameState.currentQuestion + 1}/10
               </h2>
               {selectedOrder.length > 0 && (
                 <Button
                   variant='destructive'
                   size='sm'
                   onClick={handleReset}
-                  className='text-sm hover:bg-red-50'
+                  className='text-sm hover:bg-red-50 p-2'
                 >
                   選択をリセット
                 </Button>
@@ -208,14 +207,14 @@ export default function GameComponent({
               </motion.div>
             ))}
           </div>
-
+          {/* 
           <div className='mt-4 text-sm text-gray-500'>
             {gameState.preliminaryRound ? (
               <p>予選ラウンド: 全体的な傾向を把握します</p>
             ) : (
               <p>決勝ラウンド: より詳細な分析を行います</p>
             )}
-          </div>
+          </div> */}
         </Card>
       </motion.div>
     </AnimatePresence>
