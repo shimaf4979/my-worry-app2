@@ -8,18 +8,12 @@ import UserInfoForm from "@/components/UserInfoForm";
 import GameComponent from "@/components/GameComponent";
 import ResultsComponent from "@/components/ResultsComponent";
 import { supabase } from "@/lib/supabase";
+import { initialGameState } from "@/types/index";
 
 export default function DiagnosisPage() {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<any>(null);
-  const [gameState, setGameState] = useState<any>({
-    preliminaryRound: true,
-    currentQuestion: 0,
-    selectedAnswers: {},
-    topWorries: [],
-    usedPreliminaryQuestionIds: new Set<string>(),
-    usedFinalQuestionIds: new Set<string>(),
-  });
+  const [gameState, setGameState] = useState<any>(initialGameState);
   const [showResults, setShowResults] = useState(false);
 
   const handleGameComplete = async (finalScores: Record<string, number>) => {

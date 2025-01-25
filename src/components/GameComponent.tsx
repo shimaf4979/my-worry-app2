@@ -44,7 +44,8 @@ export default function GameComponent({
     return `${currentQuestion?.id}-${gameState.currentQuestion}`;
   };
 
-  // GameComponentでの質問生成時の処理
+  // GameComponent.tsx の useEffect 部分を修正
+
   useEffect(() => {
     if (gameState.currentQuestion >= 10) {
       const finalScores = calculateFinalScores(gameState.selectedAnswers);
@@ -57,7 +58,6 @@ export default function GameComponent({
       newQuestion = generatePreliminaryQuestion(gameState);
     } else {
       if (gameState.currentQuestion === 6) {
-        // 予選終了時に上位6つの悩みを特定
         const topWorries = getTopWorries(gameState.selectedAnswers);
         setGameState((prev: any) => ({ ...prev, topWorries }));
       }
@@ -66,16 +66,31 @@ export default function GameComponent({
 
     if (newQuestion) {
       setCurrentQuestion(newQuestion);
-      // 使用した問題IDを記録
-      setGameState((prev: any) => ({
-        ...prev,
-        usedPreliminaryQuestionIds: new Set([
-          ...prev.usedPreliminaryQuestionIds,
-          newQuestion.id,
-        ]),
-      }));
+      // 使用した選択肢を記録
+      setGameState((prev: any) => {
+        const newUsedChoiceTexts = { ...prev.usedChoiceTexts };
+        newQuestion.choices.forEach((choice) => {
+          choice.affects.forEach(({ itemId }) => {
+            const worryId = itemId;
+            if (!newUsedChoiceTexts[worryId]) {
+              newUsedChoiceTexts[worryId] = new Set();
+            }
+            newUsedChoiceTexts[worryId].add(choice.text);
+          });
+        });
+
+        return {
+          ...prev,
+          usedPreliminaryQuestionIds: new Set([
+            ...prev.usedPreliminaryQuestionIds,
+            newQuestion.id,
+          ]),
+          usedChoiceTexts: newUsedChoiceTexts,
+        };
+      });
     }
   }, [gameState.currentQuestion]);
+
   // 3. 遷移ロジックを修正
   const handleChoiceSelect = (index: any) => {
     if (selectedOrder.includes(index) || isTransitioning || isAnimating) return;

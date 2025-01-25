@@ -1,4 +1,4 @@
-import { WorryTypes } from "@/data/worryTypes";
+// import { WorryTypes } from "@/data/worryTypes";
 // // types/index.ts
 // export type Category =
 //   | "self"
@@ -30,8 +30,54 @@ export interface UserInfo {
 
 export interface Choice {
   text: string;
-  affects: Array<{ itemId: keyof typeof WorryTypes }>;
+  affects: Array<{ itemId: WorryType }>;
 }
+
+// types/index.ts
+
+export type WorryType =
+  | "motivation"
+  | "future"
+  | "health"
+  | "friendshipRelations"
+  | "loveRelations"
+  | "comparison"
+  | "livingCost"
+  | "wastedMoney"
+  | "freeTime"
+  | "assignments";
+
+export interface GameState {
+  preliminaryRound: boolean;
+  currentQuestion: number;
+  selectedAnswers: Record<string, number>;
+  topWorries: string[];
+  usedPreliminaryQuestionIds: Set<string>;
+  usedFinalQuestionIds: Set<string>;
+  usedChoiceTexts: Record<WorryType, Set<string>>;
+}
+
+// 初期状態の設定
+export const initialGameState: GameState = {
+  preliminaryRound: true,
+  currentQuestion: 0,
+  selectedAnswers: {},
+  topWorries: [],
+  usedPreliminaryQuestionIds: new Set<string>(),
+  usedFinalQuestionIds: new Set<string>(),
+  usedChoiceTexts: {
+    motivation: new Set(),
+    future: new Set(),
+    health: new Set(),
+    friendshipRelations: new Set(),
+    loveRelations: new Set(),
+    comparison: new Set(),
+    livingCost: new Set(),
+    wastedMoney: new Set(),
+    freeTime: new Set(),
+    assignments: new Set(),
+  },
+};
 
 export interface Question {
   id: string;
