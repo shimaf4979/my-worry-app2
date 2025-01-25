@@ -43,16 +43,23 @@ export default function Home() {
 
   return (
     <main className='min-h-screen relative'>
-      <AnimatePresence mode='wait'>
+      <AnimatePresence initial={false}>
         <motion.div
           key={currentBg}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className='absolute inset-0 bg-cover bg-center bg-no-repeat'
-          style={{ backgroundImage: `url(${backgrounds[currentBg]})` }}
-        />
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className='absolute inset-0'
+        >
+          <div
+            className='absolute inset-0 bg-cover bg-center bg-no-repeat'
+            style={{
+              backgroundImage: `url(${backgrounds[currentBg]})`,
+              filter: "brightness(0.85)",
+            }}
+          />
+        </motion.div>
       </AnimatePresence>
 
       {/* オーバーレイ */}

@@ -17,7 +17,8 @@ export default function DiagnosisPage() {
     currentQuestion: 0,
     selectedAnswers: {},
     topWorries: [],
-    usedWorryIds: new Set<string>(),
+    usedPreliminaryQuestionIds: new Set<string>(),
+    usedFinalQuestionIds: new Set<string>(),
   });
   const [showResults, setShowResults] = useState(false);
 

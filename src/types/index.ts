@@ -1,3 +1,4 @@
+import { WorryTypes } from "@/data/worryTypes";
 // // types/index.ts
 // export type Category =
 //   | "self"
@@ -21,23 +22,23 @@
 //   year4?: number;
 // }
 
-// export interface UserInfo {
-//   nickname: string;
-//   educationLevel: EducationLevel;
-//   yearNumber: number | null;
-// }
+export interface UserInfo {
+  nickname: string;
+  educationLevel: EducationLevel;
+  yearNumber: number | null;
+}
 
-// export interface Choice {
-//   text: string;
-//   affects: Array<{ itemId: keyof typeof WorryTypes }>;
-// }
+export interface Choice {
+  text: string;
+  affects: Array<{ itemId: keyof typeof WorryTypes }>;
+}
 
-// export interface Question {
-//   id: string;
-//   category: Category | "final";
-//   text: string;
-//   choices: Choice[];
-// }
+export interface Question {
+  id: string;
+  category: Category | "preliminary" | "final";
+  text: string;
+  choices: Choice[];
+}
 
 // export interface WorryType {
 //   id: string;

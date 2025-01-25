@@ -117,7 +117,7 @@ export default function WorryDistributionChart({
         position: "bottom" as const,
         align: "start" as const,
         labels: {
-          boxWidth: 15,
+          boxWidth: 10,
           padding: 15,
           font: {
             size: 10,
@@ -171,12 +171,12 @@ export default function WorryDistributionChart({
         },
         ticks: {
           font: {
-            size: 10,
+            size: 13,
             family: "'Noto Sans JP', sans-serif",
           },
-          maxRotation: -45,
-          minRotation: -45,
-          padding: 4,
+          maxRotation: -0,
+          minRotation: -0,
+          padding: 0,
         },
         afterFit: (context: any) => {
           context.paddingLeft = 20;

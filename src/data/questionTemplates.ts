@@ -1,95 +1,74 @@
 // data/questionTemplates.ts
-
 export const preliminaryTemplates = [
   {
-    text: "今すぐに実行したいことは？",
+    id: "p1",
+    text: "今直感的に悩んでいることの優先度は？",
     type: "preliminary",
-    validWorries: ["motivation", "growth", "future", "health"],
+    validWorries: ["motivation", "future", "future", "health"],
   },
   {
-    text: "最近、人間関係で最も気になることは？",
+    id: "p2",
+    text: "人と関わるときの優先度は？",
     type: "preliminary",
     validWorries: [
       "friendshipRelations",
       "loveRelations",
       "comparison",
-      "growth",
+      "freeTime",
     ],
   },
   {
-    text: "お金に関して最も心配なことは？",
+    id: "p3",
+    text: "お金を使うときに思うことの優先度は？",
     type: "preliminary",
-    validWorries: ["livingCost", "wastedMoney", "future", "growth"],
+    validWorries: ["livingCost", "wastedMoney", "future", "motivation"],
   },
   {
-    text: "時間の使い方で困っていることは？",
+    id: "p4",
+    text: "時間の使い方で思うことの優先度は？",
     type: "preliminary",
-    validWorries: ["freeTime", "assignments", "health", "growth"],
+    validWorries: ["freeTime", "assignments", "health", "future"],
   },
   {
-    text: "研究生活で最もストレスを感じるのは？",
-    type: "preliminary",
-    validWorries: ["assignments", "motivation", "future", "health"],
-  },
-  {
-    text: "ふとした時に気になることは？",
-    type: "preliminary",
-    validWorries: ["growth", "future", "friendshipRelations", "health"],
-  },
-  {
-    text: "生活習慣でよく思うことは？",
+    id: "p5",
+    text: "生活習慣でよく思うことの優先度は？",
     type: "preliminary",
     validWorries: ["health", "freeTime", "assignments", "motivation"],
   },
   {
+    id: "p6",
     text: "周りと比べた時、よく感じるのは？",
     type: "preliminary",
-    validWorries: ["comparison", "growth", "motivation", "future"],
-  },
-  {
-    text: "休日に最も気がかりなことは？",
-    type: "preliminary",
-    validWorries: ["freeTime", "assignments", "friendshipRelations", "health"],
-  },
-  {
-    text: "将来に向けて不安なことは？",
-    type: "preliminary",
-    validWorries: ["future", "livingCost", "growth", "motivation"],
+    validWorries: ["comparison", "future", "motivation", "future"],
   },
 ];
 
 export const finalTemplates = [
   {
-    text: "今最も優先して解決したい課題は？",
+    id: "f1",
+    text: "直近で最も改善したい課題は？",
     type: "final",
-    validWorries: ["all"],
   },
   {
-    text: "理想の状態に近づくために必要なことは？",
+    id: "f2",
+    text: "長期的に見て、最も重要な課題は？",
     type: "final",
-    validWorries: ["all"],
   },
   {
-    text: "生活の質を向上させるために重要なことは？",
+    id: "f3",
+    text: "今の生活の中で、最も気がかりなことは？",
     type: "final",
-    validWorries: ["all"],
   },
   {
-    text: "現状の生活を充実させるために必要なことは？",
+    id: "f4",
+    text: "理想の状態に近づくために、まず取り組むべきことは？",
     type: "final",
-    validWorries: ["all"],
-  },
-  {
-    text: "より良い未来のために改善すべきことは？",
-    type: "final",
-    validWorries: ["all"],
   },
 ];
 
 // 選択肢のテンプレート
 export const choiceTemplates: Record<string, string[]> = {
   motivation: [
-    "何かを続けるものがない",
     "多方面に興味があるが、続けられない",
     "自分に自信がない",
     "やる気が出ても、すぐに飽きてしまう",
@@ -100,20 +79,14 @@ export const choiceTemplates: Record<string, string[]> = {
     "今の勉強が将来につながるのか心配",
     "長期的な目標設定をしがち",
   ],
-  growth: [
-    "他の時間よりTOEICなどを勉強したい",
-    "他の時間より資格を取りたい",
-    "遊ぶより勉強がしたい",
-    "それよりも自己投資の時間を大事にしたい",
-  ],
+
   friendshipRelations: [
-    "友達と話した後に、その話題が頭によぎる。",
     "人間関係の維持するのが難しい",
     "新歓など人が多いところが苦手だ",
     "グループワークが苦手だ",
   ],
   loveRelations: [
-    "そんなんどうでもいいから彼氏/彼女が欲しい",
+    "そんなことより彼氏/彼女が欲しい",
     "異性との出会いってどこにあるんですか？",
     "恋愛の機会、欲しいけど行動してない",
   ],
@@ -126,8 +99,7 @@ export const choiceTemplates: Record<string, string[]> = {
   livingCost: [
     "食費を常に意識している",
     "経済的な自立をしたい",
-    "奨学金を借りたい/借りている",
-    "家計の見直しをしないといけない",
+    "家計の見直しをしたい",
   ],
   wastedMoney: [
     "オプションを無駄につけてしまう",

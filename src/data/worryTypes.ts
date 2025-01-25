@@ -1,16 +1,10 @@
 // data/worryTypes.ts
 export const WorryTypes = {
-  growth: {
-    id: "growth",
-    title: "自己成長",
-    message: "成長ばっかり考えてるみたいだけど、何か達成した？\n沐浴に行こう！",
-    category: "self",
-  },
   future: {
     id: "future",
     title: "将来への不安",
     message:
-      "将来ばっかり考えてて意識高いね！とりあえず現実見ようよ！沐浴に行こう！",
+      "将来ばっかり考えてて意識高いね！\nとりあえず現実見ようよ！\n沐浴に行こう！",
     category: "self",
   },
 

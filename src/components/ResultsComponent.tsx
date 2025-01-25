@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WorryTypes } from "@/data/worryTypes";
 import { TwitterShareButton } from "./TwitterShareButton";
-
+import DisplayMokuyoku from "./DisplayMokuyoku";
 interface Props {
   scores: Record<string, number>;
   userInfo: any;
@@ -76,7 +76,7 @@ export default function ResultsComponent({
           </div>
         </Card>
       </motion.div>
-
+      <DisplayMokuyoku />
       <motion.div variants={itemVariants}>
         <Card className='p-4'>
           <h3 className='font-semibold text-lg mb-4'>重要度の高い6つの悩み:</h3>
