@@ -47,24 +47,24 @@ export type WorryType =
   | "freeTime"
   | "assignments";
 
+// types/index.ts
 export interface GameState {
   preliminaryRound: boolean;
   currentQuestion: number;
   selectedAnswers: Record<string, number>;
   topWorries: string[];
-  usedPreliminaryQuestionIds: Set<string>;
-  usedFinalQuestionIds: Set<string>;
+  preliminaryQuestions: Question[];
+  finalQuestions: Question[];
   usedChoiceTexts: Record<WorryType, Set<string>>;
 }
 
-// 初期状態の設定
 export const initialGameState: GameState = {
   preliminaryRound: true,
   currentQuestion: 0,
   selectedAnswers: {},
   topWorries: [],
-  usedPreliminaryQuestionIds: new Set<string>(),
-  usedFinalQuestionIds: new Set<string>(),
+  preliminaryQuestions: [],
+  finalQuestions: [],
   usedChoiceTexts: {
     motivation: new Set(),
     future: new Set(),

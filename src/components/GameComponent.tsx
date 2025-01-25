@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  generatePreliminaryQuestion,
-  generateFinalQuestion,
+  initializePreliminaryQuestions,
+  prepareFinalQuestions,
   getTopWorries,
 } from "@/utils/questionGenerator";
 
@@ -46,6 +46,20 @@ export default function GameComponent({
 
   // GameComponent.tsx の useEffect 部分を修正
 
+  // 初期化時に予選問題を準備
+  useEffect(() => {
+    if (gameState.preliminaryQuestions.length === 0) {
+      const preliminaryQuestions = initializePreliminaryQuestions(
+        gameState.usedChoiceTexts
+      );
+      setGameState((prev: any) => ({
+        ...prev,
+        preliminaryQuestions,
+      }));
+    }
+  }, []);
+
+  // 現在の問題を設定
   useEffect(() => {
     if (gameState.currentQuestion >= 10) {
       const finalScores = calculateFinalScores(gameState.selectedAnswers);
@@ -53,46 +67,42 @@ export default function GameComponent({
       return;
     }
 
-    let newQuestion;
-    if (gameState.preliminaryRound) {
-      newQuestion = generatePreliminaryQuestion(gameState);
-    } else {
-      if (gameState.currentQuestion === 6) {
-        const topWorries = getTopWorries(gameState.selectedAnswers);
-        setGameState((prev: any) => ({ ...prev, topWorries }));
-      }
-      newQuestion = generateFinalQuestion(gameState);
+    // 決勝戦開始時に決勝問題を準備
+    if (
+      gameState.currentQuestion === 6 &&
+      gameState.finalQuestions.length === 0
+    ) {
+      const topWorries = getTopWorries(gameState.selectedAnswers);
+      const finalQuestions = prepareFinalQuestions(
+        topWorries,
+        gameState.usedChoiceTexts
+      );
+      setGameState((prev: any) => ({
+        ...prev,
+        finalQuestions,
+        topWorries,
+      }));
+      return;
     }
 
-    if (newQuestion) {
-      setCurrentQuestion(newQuestion);
-      // 使用した選択肢を記録
-      setGameState((prev: any) => {
-        const newUsedChoiceTexts = { ...prev.usedChoiceTexts };
-        newQuestion.choices.forEach((choice) => {
-          choice.affects.forEach(({ itemId }) => {
-            const worryId = itemId;
-            if (!newUsedChoiceTexts[worryId]) {
-              newUsedChoiceTexts[worryId] = new Set();
-            }
-            newUsedChoiceTexts[worryId].add(choice.text);
-          });
-        });
+    const questions =
+      gameState.currentQuestion < 6
+        ? gameState.preliminaryQuestions
+        : gameState.finalQuestions;
 
-        return {
-          ...prev,
-          usedPreliminaryQuestionIds: new Set([
-            ...prev.usedPreliminaryQuestionIds,
-            newQuestion.id,
-          ]),
-          usedChoiceTexts: newUsedChoiceTexts,
-        };
-      });
-    }
-  }, [gameState.currentQuestion]);
+    const questionIndex =
+      gameState.currentQuestion < 6
+        ? gameState.currentQuestion
+        : gameState.currentQuestion - 6;
 
-  // 3. 遷移ロジックを修正
-  const handleChoiceSelect = (index: any) => {
+    setCurrentQuestion(questions[questionIndex]);
+  }, [
+    gameState.currentQuestion,
+    gameState.preliminaryQuestions,
+    gameState.finalQuestions,
+  ]);
+
+  const handleChoiceSelect = (index: number) => {
     if (selectedOrder.includes(index) || isTransitioning || isAnimating) return;
 
     const newOrder = [...selectedOrder, index];
@@ -103,7 +113,6 @@ export default function GameComponent({
       setIsAnimating(true);
       updateScores(newOrder);
 
-      // アニメーション完了を待ってから次の状態に遷移
       setTimeout(() => {
         setSelectedOrder([]);
         setGameState((prev: any) => ({
@@ -113,7 +122,7 @@ export default function GameComponent({
         }));
         setIsTransitioning(false);
         setIsAnimating(false);
-      }, 300); // containerVariantsのdurationと同じ
+      }, 10); // 即時遷移のため短い時間に設定
     }
   };
 

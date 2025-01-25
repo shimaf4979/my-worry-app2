@@ -67,16 +67,18 @@ export default function ResultsComponent({
             <p className='text-lg'>{topWorry.message}</p>
           </div>
           <div className='flex justify-center mt-4'>
-            <TwitterShareButton
-              topWorry={topWorryId}
-              score={sortedScores[0][1]}
-              educationLevel={userInfo.educationLevel}
-              year={userInfo.yearNumber}
-            />
+            <TwitterShareButton topWorry={topWorryId} />
           </div>
         </Card>
       </motion.div>
-      <DisplayMokuyoku />
+      <motion.div variants={itemVariants}>
+        <span className='text-lg'>
+          あなたにおすすめの沐浴は
+          <span className='font-semibold'>「{topWorry.mokuyoku}」</span>
+          です！
+        </span>
+        <DisplayMokuyoku />
+      </motion.div>
       <motion.div variants={itemVariants}>
         <Card className='p-4'>
           <h3 className='font-semibold text-lg mb-4'>重要度の高い6つの悩み:</h3>
@@ -145,12 +147,7 @@ export default function ResultsComponent({
 
       <motion.div variants={itemVariants} className='pt-4 flex flex-col gap-4'>
         <div className='flex justify-center'>
-          <TwitterShareButton
-            topWorry={topWorryId}
-            score={sortedScores[0][1]}
-            educationLevel={userInfo.educationLevel}
-            year={userInfo.yearNumber}
-          />
+          <TwitterShareButton topWorry={topWorryId} />
         </div>
         <Button
           onClick={onReturnStatistics}

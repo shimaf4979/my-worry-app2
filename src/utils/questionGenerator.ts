@@ -1,6 +1,5 @@
 // utils/questionGenerator.ts
 import { Question, Choice, GameState, WorryType } from "@/types";
-import { WorryTypes } from "@/data/worryTypes";
 import {
   preliminaryTemplates,
   finalTemplates,
@@ -9,84 +8,76 @@ import {
 
 // 未使用の選択肢テキストを取得する関数
 const getUnusedChoiceText = (
-  worryId: string,
+  worryId: WorryType,
   usedChoiceTexts: Record<WorryType, Set<string>>
 ): string => {
   const allChoices = choiceTemplates[worryId];
-  const usedTexts = usedChoiceTexts[worryId as WorryType] || new Set();
+  const usedTexts = usedChoiceTexts[worryId] || new Set();
 
   // まだ使用されていない選択肢を探す
   const unusedChoices = allChoices.filter((choice) => !usedTexts.has(choice));
 
-  // 未使用の選択肢がない場合は、既存の選択肢をリセット
   if (unusedChoices.length === 0) {
-    return allChoices[Math.floor(Math.random() * allChoices.length)];
+    console.error("No unused choices available for", worryId);
+    return allChoices[0];
   }
 
   return unusedChoices[Math.floor(Math.random() * unusedChoices.length)];
 };
 
-export const generatePreliminaryQuestion = (
-  gameState: GameState
-): Question | null => {
-  const availableTemplates = preliminaryTemplates.filter(
-    (template) => !gameState.usedPreliminaryQuestionIds.has(template.id)
-  );
-
-  if (availableTemplates.length === 0) return null;
-
-  const randomIndex = Math.floor(Math.random() * availableTemplates.length);
-  const template = availableTemplates[randomIndex];
-  const usedChoiceTexts = { ...gameState.usedChoiceTexts };
-
-  // 選択肢を生成
-  const choices: Choice[] = template.validWorries.map((worryId) => {
+// 問題を生成する関数
+const createQuestion = (
+  template: any,
+  worries: WorryType[],
+  usedChoiceTexts: Record<WorryType, Set<string>>
+): Question => {
+  const choices: Choice[] = worries.map((worryId) => {
     const choiceText = getUnusedChoiceText(worryId, usedChoiceTexts);
     return {
       text: choiceText,
-      affects: [{ itemId: worryId as keyof typeof WorryTypes }],
+      affects: [{ itemId: worryId }],
     };
   });
 
   return {
     id: template.id,
-    category: "preliminary",
+    category: template.type,
     text: template.text,
     choices: shuffleArray(choices),
   };
 };
 
-export const generateFinalQuestion = (
-  gameState: GameState
-): Question | null => {
-  const availableTemplates = finalTemplates.filter(
-    (template) => !gameState.usedFinalQuestionIds.has(template.id)
+// 初期化時に予選の問題を準備
+export const initializePreliminaryQuestions = (
+  usedChoiceTexts: Record<WorryType, Set<string>>
+): Question[] => {
+  // 予選テンプレートをシャッフル
+  const shuffledTemplates = shuffleArray([...preliminaryTemplates]);
+
+  return shuffledTemplates.map((template) =>
+    createQuestion(
+      template,
+      template.validWorries as WorryType[],
+      usedChoiceTexts
+    )
   );
+};
 
-  if (availableTemplates.length === 0 || gameState.topWorries.length < 4) {
-    return null;
-  }
+// 決勝の問題を準備
+export const prepareFinalQuestions = (
+  topWorries: string[],
+  usedChoiceTexts: Record<WorryType, Set<string>>
+): Question[] => {
+  // 決勝テンプレートをシャッフル
+  const shuffledTemplates = shuffleArray([...finalTemplates]);
 
-  const randomIndex = Math.floor(Math.random() * availableTemplates.length);
-  const template = availableTemplates[randomIndex];
-  const selectedWorries = shuffleArray([...gameState.topWorries]).slice(0, 4);
-  const usedChoiceTexts = { ...gameState.usedChoiceTexts };
-
-  // 選択肢を生成
-  const choices: Choice[] = selectedWorries.map((worryId) => {
-    const choiceText = getUnusedChoiceText(worryId, usedChoiceTexts);
-    return {
-      text: choiceText,
-      affects: [{ itemId: worryId as keyof typeof WorryTypes }],
-    };
-  });
-
-  return {
-    id: template.id,
-    category: "final",
-    text: template.text,
-    choices: shuffleArray(choices),
-  };
+  return shuffledTemplates.map((template) =>
+    createQuestion(
+      template,
+      shuffleArray([...(topWorries as WorryType[])]).slice(0, 4),
+      usedChoiceTexts
+    )
+  );
 };
 
 function shuffleArray<T>(array: T[]): T[] {

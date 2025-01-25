@@ -2,21 +2,12 @@
 import { TwitterIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorryTypes } from "@/data/worryTypes";
-import { EDUCATION_LEVEL_LABELS } from "@/constants/labels";
 
 interface ShareButtonProps {
   topWorry: string;
-  score: number;
-  educationLevel: keyof typeof EDUCATION_LEVEL_LABELS;
-  year?: number;
 }
 
-export function TwitterShareButton({
-  topWorry,
-  score,
-  educationLevel,
-  year,
-}: ShareButtonProps) {
+export function TwitterShareButton({ topWorry }: ShareButtonProps) {
   const worry = WorryTypes[topWorry as keyof typeof WorryTypes];
 
   const shareText =
@@ -26,7 +17,7 @@ export function TwitterShareButton({
     `\n` +
     `${worry.message}\n` +
     `\n` +
-    `「${worry.title}」\n` +
+    `「${worry.mokuyoku}」\n` +
     `\n` +
     "みんなも理系大学生の悩みを診断してみてね！\n";
   const shareUrl = "https://www.crti.jp/"; // あなたのウェブサイトのURL
