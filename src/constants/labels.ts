@@ -5,6 +5,3 @@ export const EDUCATION_LEVEL_LABELS = {
   doctor: "博士",
   other: "その他",
 } as const;
-
-// 型定義も追加
-export type EducationLevelKey = keyof typeof EDUCATION_LEVEL_LABELS;

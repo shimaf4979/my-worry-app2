@@ -2,11 +2,12 @@
 import { TwitterIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WorryTypes } from "@/data/worryTypes";
+import { EDUCATION_LEVEL_LABELS } from "@/constants/labels";
 
 interface ShareButtonProps {
   topWorry: string;
   score: number;
-  educationLevel: string;
+  educationLevel: keyof typeof EDUCATION_LEVEL_LABELS;
   year?: number;
 }
 
@@ -19,11 +20,11 @@ export function TwitterShareButton({
   const worry = WorryTypes[topWorry as keyof typeof WorryTypes];
 
   const shareText =
-    `私の最大の悩みは「${worry.title}」でした！（${Math.round(score)}%）\n` +
-    `${educationLevel}${year ? ` ${year}年生` : ""}\n\n` +
-    "理系大学生の悩み診断で診断してみました！\n";
-
-  const shareUrl = "https://yourwebsite.com"; // あなたのウェブサイトのURL
+    `私の最大の悩みは「${worry.title}」でした！\n` +
+    `${worry.message}\n` +
+    `\n` +
+    "みんなも理系大学生の悩みを診断してみてね！\n";
+  const shareUrl = "https://my-worry-app2-delta.vercel.app/"; // あなたのウェブサイトのURL
   const hashtags = "CRTI,理系大学生の悩み診断";
 
   const twitterShareUrl =

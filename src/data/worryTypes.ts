@@ -9,7 +9,8 @@ export const WorryTypes = {
   future: {
     id: "future",
     title: "将来への不安",
-    message: "将来なんて考えても何も生まれない！沐浴に行こう！",
+    message:
+      "将来ばっかり考えてて意識高いね！とりあえず現実見ようよ！沐浴に行こう！",
     category: "self",
   },
 
@@ -31,7 +32,7 @@ export const WorryTypes = {
     id: "loveRelations",
     title: "恋愛関係",
     message:
-      "彼女/彼氏いなくて残念だね、でも修羅の道を選んだのは自分じゃん！沐浴に行こう！",
+      "彼女/彼氏いなくて残念だね！でも修羅の道を選んだのは自分じゃん！沐浴に行こう！",
     category: "others",
   },
   comparison: {
@@ -43,7 +44,8 @@ export const WorryTypes = {
   livingCost: {
     id: "livingCost",
     title: "生活費",
-    message: "お疲れ様です。見直せる箇所を探していきましょう。",
+    message:
+      "お疲れ様です。見直せる箇所を探していきましょう。沐浴に行きましょう。",
     category: "money",
   },
   wastedMoney: {
@@ -55,7 +57,7 @@ export const WorryTypes = {
   freeTime: {
     id: "freeTime",
     title: "自由時間",
-    message: "自由な時間？研究を選んだのは君じゃん！沐浴に行こう",
+    message: "自由な時間？でも研究への道を選んだのは君じゃん！沐浴に行こう！",
     category: "time",
   },
   assignments: {
