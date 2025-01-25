@@ -4,14 +4,15 @@ export const WorryTypes = {
     id: "future",
     title: "将来への不安",
     message:
-      "将来ばっかり考えてて意識高いね！\nとりあえず現実見ようよ！\n沐浴に行こう！",
+      "将来ばっかり考えてるけど、何か達成したん？\n気分転換に以下の沐浴に行こう！",
     category: "self",
   },
 
   motivation: {
     id: "motivation",
     title: "モチベーション",
-    message: "自分に自信がないの？\n沐浴に行こう！",
+    message:
+      "自分に自信がないの？自分のせいじゃん！\n意識高めるために以下の沐浴に行こう！",
     category: "self",
   },
 
@@ -19,33 +20,34 @@ export const WorryTypes = {
     id: "friendshipRelations",
     title: "友情関係",
     message:
-      "友達関係ズタボロだね！一度失った友情は取り戻せないから、\n沐浴に行こう！",
+      "友達いたんだ！よかった。いるだけマシだよ。\n気分転換に以下の沐浴に行こう！",
     category: "others",
   },
   loveRelations: {
     id: "loveRelations",
     title: "恋愛関係",
     message:
-      "彼女/彼氏いなくて残念だね！でも修羅の道を選んだのは自分じゃん！\n  沐浴に行こう！",
+      "彼女/彼氏いなくて残念だね！でも修羅の道を選んだのは自分じゃん！\n以下の沐浴に行こう！",
     category: "others",
   },
   comparison: {
     id: "comparison",
     title: "他人との比較",
-    message: "嫉妬マシマシ人間だね！他人を意識しないために\n沐浴に行こう！",
+    message:
+      "他人とばかり比較してるけど、自分のこと見えてる？\n気分転換に以下の沐浴に行こう！",
     category: "others",
   },
   livingCost: {
     id: "livingCost",
     title: "生活費",
     message:
-      "お疲れ様です。見直せる箇所を探していきましょう。\n沐浴に行きましょう。",
+      "お疲れ様です。\n見直せる箇所を探すために、以下の沐浴に行きましょう。",
     category: "money",
   },
   wastedMoney: {
     id: "wastedMoney",
     title: "浪費癖",
-    message: "お金なくなったら自己責任だよ！\n沐浴に行こう！",
+    message: "お金なくなったら自己責任だよ！\n以下の沐浴に行こう！",
     category: "money",
   },
   freeTime: {
@@ -57,14 +59,15 @@ export const WorryTypes = {
   assignments: {
     id: "assignments",
     title: "課題",
-    message: "日々課題課題言ってそうだね。人生大変なんだろな。\n沐浴いこう。",
+    message:
+      "日々課題課題言ってそうだね。人生大変なんだろな。\n以下の沐浴いこう。",
     category: "academic",
   },
   health: {
     id: "health",
     title: "健康",
     message:
-      "健康を意識する君は素晴らしい。理系の鏡だ。\nもっと健康になるために沐浴に行こう！",
+      "健康を意識する君は素晴らしい。理系の鏡だ。\n健康のために以下の沐浴に行こう！",
     category: "life",
   },
 } as const;

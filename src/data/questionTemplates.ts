@@ -4,7 +4,7 @@ export const preliminaryTemplates = [
     id: "p1",
     text: "今直感的に悩んでいることの優先度は？",
     type: "preliminary",
-    validWorries: ["motivation", "future", "future", "health"],
+    validWorries: ["motivation", "wastedMoney", "livingCost", "health"],
   },
   {
     id: "p2",
@@ -21,13 +21,13 @@ export const preliminaryTemplates = [
     id: "p3",
     text: "お金を使うときに思うことの優先度は？",
     type: "preliminary",
-    validWorries: ["livingCost", "wastedMoney", "future", "motivation"],
+    validWorries: ["livingCost", "wastedMoney", "future", "loveRelations"],
   },
   {
     id: "p4",
     text: "時間の使い方で思うことの優先度は？",
     type: "preliminary",
-    validWorries: ["freeTime", "assignments", "health", "future"],
+    validWorries: ["freeTime", "assignments", "health", "loveRelations"],
   },
   {
     id: "p5",
@@ -39,7 +39,12 @@ export const preliminaryTemplates = [
     id: "p6",
     text: "周りと比べた時、よく感じるのは？",
     type: "preliminary",
-    validWorries: ["comparison", "future", "motivation", "future"],
+    validWorries: [
+      "comparison",
+      "assignments",
+      "friendshipRelations",
+      "future",
+    ],
   },
 ];
 

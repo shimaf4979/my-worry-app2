@@ -112,7 +112,7 @@ export default function ResultsComponent({
       <motion.div variants={itemVariants}>
         <Card className='p-4'>
           <h3 className='font-semibold text-lg mb-4'>
-            あまり意識していない5つの悩み:
+            あまり意識していない4つの悩み:
           </h3>
           <div className='space-y-3'>
             {bottomFourScores.map(([key, score], index) => (
@@ -144,6 +144,14 @@ export default function ResultsComponent({
       </motion.div>
 
       <motion.div variants={itemVariants} className='pt-4 flex flex-col gap-4'>
+        <div className='flex justify-center'>
+          <TwitterShareButton
+            topWorry={topWorryId}
+            score={sortedScores[0][1]}
+            educationLevel={userInfo.educationLevel}
+            year={userInfo.yearNumber}
+          />
+        </div>
         <Button
           onClick={onReturnStatistics}
           className='w-full bg-slate-200/90 hover:bg-slate-200 text-gray-800 font-bold py-4 rounded-full text-lg transition-all duration-300'

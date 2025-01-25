@@ -21,16 +21,21 @@ export function TwitterShareButton({
 
   const shareText =
     `私の最大の悩みは「${worry.title}」でした！\n` +
+    `\n` +
+    "↓↓担当者からのアドバイス↓↓\n" +
+    `\n` +
     `${worry.message}\n` +
+    `\n` +
+    `「${worry.title}」\n` +
     `\n` +
     "みんなも理系大学生の悩みを診断してみてね！\n";
   const shareUrl = "https://www.crti.jp/"; // あなたのウェブサイトのURL
-  const hashtags = "CRTI,理系大学生の悩み診断";
+  const hashtags = "CRTI,理系学生の心の声";
 
   const twitterShareUrl =
     `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}` +
-    `&url=${encodeURIComponent(shareUrl)}` +
-    `&hashtags=${encodeURIComponent(hashtags)}`;
+    `&hashtags=${encodeURIComponent(hashtags)}` +
+    `&url=${encodeURIComponent(shareUrl)}`;
 
   return (
     <Button
@@ -38,7 +43,7 @@ export function TwitterShareButton({
       className='bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white'
     >
       <TwitterIcon className='w-5 h-5 mr-2' />
-      結果をツイート
+      結果をツイートする
     </Button>
   );
 }
