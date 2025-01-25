@@ -59,7 +59,7 @@ export default function GameComponent({
       if (gameState.currentQuestion === 6) {
         // 予選終了時に上位6つの悩みを特定
         const topWorries = getTopWorries(gameState.selectedAnswers);
-        setGameState((prev) => ({ ...prev, topWorries }));
+        setGameState((prev: any) => ({ ...prev, topWorries }));
       }
       newQuestion = generateFinalQuestion(gameState);
     }
@@ -67,7 +67,7 @@ export default function GameComponent({
     if (newQuestion) {
       setCurrentQuestion(newQuestion);
       // 使用した問題IDを記録
-      setGameState((prev) => ({
+      setGameState((prev: any) => ({
         ...prev,
         usedPreliminaryQuestionIds: new Set([
           ...prev.usedPreliminaryQuestionIds,
