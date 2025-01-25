@@ -24,7 +24,7 @@ export function TwitterShareButton({
     `${worry.message}\n` +
     `\n` +
     "みんなも理系大学生の悩みを診断してみてね！\n";
-  const shareUrl = "https://my-worry-app2-delta.vercel.app/"; // あなたのウェブサイトのURL
+  const shareUrl = "https://www.crti.jp/"; // あなたのウェブサイトのURL
   const hashtags = "CRTI,理系大学生の悩み診断";
 
   const twitterShareUrl =
