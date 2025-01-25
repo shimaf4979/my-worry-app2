@@ -147,7 +147,7 @@ export const choiceTemplates: Record<string, string[]> = {
   health: [
     "アラームを大量に設定してしまう",
     "運動するといってもう1年以上経っている",
-    "油",
+    "間食をよくしてしまう",
     "ストレス管理は叫んで発散してしまう",
   ],
 };
