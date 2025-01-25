@@ -67,6 +67,7 @@ export default function DiagnosisPage() {
               scores={gameState.selectedAnswers}
               userInfo={userInfo}
               onReturnHome={() => router.push("/")}
+              onReturnStatistics={() => router.push("/statistics")}
             />
           )}
         </AnimatePresence>

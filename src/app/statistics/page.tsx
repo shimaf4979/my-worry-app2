@@ -7,16 +7,126 @@ import { Card } from "@/components/ui/card";
 import WorryDistributionChart from "@/components/WorryDistributionChart";
 import { supabase } from "@/lib/supabase";
 import { WorryTypes } from "@/data/worryTypes";
-import { validateUserResults } from "@/utils/validation";
 import type { UserResult, EducationLevel } from "@/types";
+import { EDUCATION_LEVEL_LABELS } from "@/constants/labels";
 
 const educationOptions = [
   { value: "all", label: "全て" },
   { value: "undergraduate", label: "学部" },
   { value: "master", label: "修士" },
   { value: "doctor", label: "博士" },
-  { value: "other", label: "その他" },
 ] as const;
+
+const RecentResults = ({ results }: { results: UserResult[] }) => {
+  const getEducationLevelStyle = (educationLevel: EducationLevel) => {
+    switch (educationLevel) {
+      case "undergraduate":
+        return "bg-blue-50";
+      case "master":
+        return "bg-green-50";
+      case "doctor":
+        return "bg-red-50";
+      case "other":
+        return "bg-purple-50";
+      default:
+        return "bg-gray-50";
+    }
+  };
+
+  const getYearStyle = (yearNumber: number) => {
+    switch (yearNumber) {
+      case 1:
+        return "bg-pink-50 text-pink-600"; // ライトピンク
+      case 2:
+        return "bg-pink-100 text-pink-700"; // ホットピンク
+      case 3:
+        return "bg-red-100 text-red-700"; // ライトレッド（ピンク寄り）
+      case 4:
+        return "bg-red-200 text-red-900"; // クリムゾン（濃い赤）
+      default:
+        return "bg-gray-100 text-gray-800"; // デフォルト
+    }
+  };
+
+  if (results.length === 0) {
+    return (
+      <div className='text-center text-gray-500 py-4'>
+        まだ診断結果がありません
+      </div>
+    );
+  }
+
+  return (
+    <div className='space-y-3'>
+      {results.slice(0, 10).map((result) => (
+        <motion.div
+          key={result.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`p-4 rounded-lg shadow-sm border border-gray-200 
+              ${getEducationLevelStyle(
+                result.education_level as EducationLevel
+              )}`}
+        >
+          <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2'>
+            <div className='flex items-center space-x-2'>
+              <div>
+                <span className='font-semibold'>{result.nickname}</span>
+                <span className='text-sm'>さん</span>
+              </div>
+              <div className='flex items-center space-x-1'>
+                <span
+                  className={`px-2 py-1 rounded-md text-sm font-medium
+                    ${
+                      result.education_level === "undergraduate"
+                        ? "bg-blue-100 text-blue-800"
+                        : ""
+                    }
+                    ${
+                      result.education_level === "master"
+                        ? "bg-green-100 text-green-800"
+                        : ""
+                    }
+                    ${
+                      result.education_level === "doctor"
+                        ? "bg-red-100 text-red-800"
+                        : ""
+                    }
+                    ${
+                      result.education_level === "other"
+                        ? "bg-purple-100 text-purple-800"
+                        : ""
+                    }`}
+                >
+                  {EDUCATION_LEVEL_LABELS[result.education_level]}
+                </span>
+                {result.year_number && (
+                  <span
+                    className={`px-2 py-1 rounded-md text-sm font-medium 
+                      ${getYearStyle(result.year_number)}`}
+                  >
+                    {result.year_number}年生
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className='flex items-center gap-1'>
+              <span className='font-semibold'>
+                {WorryTypes[result.top_worry as keyof typeof WorryTypes]?.title}
+              </span>
+              に悩んでいます
+            </div>
+          </div>
+        </motion.div>
+      ))}
+      {results.length > 10 && (
+        <div className='text-center text-gray-500 text-sm py-2'>
+          ※ 最新10件の結果のみ表示しています
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function StatisticsPage() {
   const [results, setResults] = useState<UserResult[]>([]);
@@ -37,30 +147,29 @@ export default function StatisticsPage() {
 
       const { data, error: supabaseError } = await supabase
         .from("user_results")
-        .select("*")
+        .select(
+          `
+          id,
+          created_at,
+          nickname,
+          education_level,
+          year_number,
+          top_worry,
+          top_worry_score
+        `
+        )
         .order("created_at", { ascending: false });
 
       if (supabaseError) {
+        console.error("Supabase error:", supabaseError);
         throw supabaseError;
       }
 
       console.log("Raw fetched data:", data);
 
-      if (!data) {
-        setResults([]);
-        return;
-      }
-
-      // データの検証
-      const validation = validateUserResults(data);
-      if (!validation.isValid) {
-        console.error("Data validation errors:", validation.errors);
-        throw new Error("データの形式が不正です");
-      }
-
-      setResults(data);
+      setResults(data || []);
     } catch (error) {
-      console.error("Error fetching results:", error);
+      console.error("Error details:", error);
       setError("データの取得に失敗しました");
       setResults([]);
     } finally {
@@ -69,7 +178,11 @@ export default function StatisticsPage() {
   };
 
   const processResults = useMemo(() => {
-    console.log("Processing results:", results);
+    console.log("Processing results with length:", results.length);
+
+    if (!Array.isArray(results) || results.length === 0) {
+      return [];
+    }
 
     const processedData = Object.entries(WorryTypes).map(([worryId, worry]) => {
       const counts = {
@@ -87,14 +200,15 @@ export default function StatisticsPage() {
 
       results.forEach((result) => {
         if (result.top_worry === worryId) {
-          // 教育レベルのカウント
-          const educationLevel = result.education_level as keyof typeof counts;
-          //   counts[educationLevel] += 1;
-
-          // 学年のカウント
-          if (result.year_number) {
-            const yearKey = `year${result.year_number}` as keyof typeof counts;
-            // counts[yearKey] += 1;
+          if (selectedEducationLevel === "all") {
+            const level = result.education_level as keyof typeof counts;
+            counts[level]++;
+          } else if (result.education_level === selectedEducationLevel) {
+            if (result.year_number) {
+              const yearKey =
+                `year${result.year_number}` as keyof typeof counts;
+              counts[yearKey]++;
+            }
           }
         }
       });
@@ -104,12 +218,12 @@ export default function StatisticsPage() {
 
     console.log("Processed data:", processedData);
     return processedData;
-  }, [results]);
+  }, [results, selectedEducationLevel]);
 
   return (
     <div className='w-full p-4'>
       <div className='max-w-full mx-auto space-y-6'>
-        <Card className='p-4'>
+        <Card className='p-4 overflow-hidden'>
           <div className='mb-6'>
             <h1 className='text-xl md:text-2xl font-bold mb-4'>
               みんなの悩み分布
@@ -148,7 +262,7 @@ export default function StatisticsPage() {
               データがありません
             </div>
           ) : (
-            <div className='w-full h-full'>
+            <div className='w-full -mx-4'>
               <WorryDistributionChart
                 data={processResults}
                 selectedEducationLevel={selectedEducationLevel}
@@ -158,44 +272,13 @@ export default function StatisticsPage() {
         </Card>
 
         <Card className='p-4'>
-          <h2 className='text-lg md:text-xl font-bold mb-4'>最近の診断結果</h2>
-          <div className='space-y-3'>
-            {results.slice(0, 10).map((result) => (
-              <motion.div
-                key={result.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className='p-4 bg-white rounded-lg shadow-sm border border-gray-100
-                       hover:shadow-md transition-shadow'
-              >
-                <div className='flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2'>
-                  <div>
-                    <span className='font-medium'>{result.nickname}</span>
-                    <span className='text-gray-500 ml-2'>
-                      ({result.education_level}
-                      {result.year_number && ` ${result.year_number}年生`})
-                    </span>
-                  </div>
-                  <div className='flex items-center gap-2'>
-                    <span className='font-medium'>
-                      {
-                        WorryTypes[result.top_worry as keyof typeof WorryTypes]
-                          ?.title
-                      }
-                    </span>
-                    <span className='px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm'>
-                      {Math.round(result.top_worry_score)}%
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            {results.length === 0 && (
-              <div className='text-center text-gray-500 py-4'>
-                まだ診断結果がありません
-              </div>
-            )}
-          </div>
+          <h2 className='text-lg md:text-xl font-bold mb-4'>
+            最新の診断結果
+            <span className='text-sm font-normal text-gray-500 ml-2'>
+              (最新10件)
+            </span>
+          </h2>
+          <RecentResults results={results} />
         </Card>
       </div>
     </div>

@@ -3,17 +3,20 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WorryTypes } from "@/data/worryTypes";
+import { TwitterShareButton } from "./TwitterShareButton";
 
 interface Props {
   scores: Record<string, number>;
   userInfo: any;
   onReturnHome: () => void;
+  onReturnStatistics: () => void;
 }
 
 export default function ResultsComponent({
   scores,
   userInfo,
   onReturnHome,
+  onReturnStatistics,
 }: Props) {
   const sortedScores = Object.entries(scores).sort(([, a], [, b]) => b - a);
 
@@ -63,6 +66,14 @@ export default function ResultsComponent({
             </h3>
             <p className='text-lg'>{topWorry.message}</p>
           </div>
+          <div className='flex justify-center mt-4'>
+            <TwitterShareButton
+              topWorry={topWorryId}
+              score={sortedScores[0][1]}
+              educationLevel={userInfo.educationLevel}
+              year={userInfo.yearNumber}
+            />
+          </div>
         </Card>
       </motion.div>
 
@@ -101,7 +112,7 @@ export default function ResultsComponent({
       <motion.div variants={itemVariants}>
         <Card className='p-4'>
           <h3 className='font-semibold text-lg mb-4'>
-            あまり意識していない4つの悩み:
+            あまり意識していない5つの悩み:
           </h3>
           <div className='space-y-3'>
             {bottomFourScores.map(([key, score], index) => (
@@ -132,8 +143,17 @@ export default function ResultsComponent({
         </Card>
       </motion.div>
 
-      <motion.div variants={itemVariants} className='pt-4'>
-        <Button onClick={onReturnHome} className='w-full'>
+      <motion.div variants={itemVariants} className='pt-4 flex flex-col gap-4'>
+        <Button
+          onClick={onReturnStatistics}
+          className='w-full bg-slate-200/90 hover:bg-slate-200 text-gray-800 font-bold py-4 rounded-full text-lg transition-all duration-300'
+        >
+          みんなの回答を見る
+        </Button>
+        <Button
+          onClick={onReturnHome}
+          className='w-full bg-slate-800 hover:bg-slate-600 text-white font-bold py-4 rounded-full text-lg transition-all duration-300'
+        >
           トップページに戻る
         </Button>
       </motion.div>

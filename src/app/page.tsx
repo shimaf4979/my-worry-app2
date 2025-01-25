@@ -69,7 +69,7 @@ export default function Home() {
           variants={itemVariants}
         >
           <h1 className='text-3xl font-bold text-white'>理系大学生の皆さん</h1>
-          <p className='text-xl text-gray-200'>こんな悩み、ありませんか？</p>
+          <p className='text-xl text-gray-200'>こんな経験、ありませんか？</p>
           <p className='text-2xl font-medium text-white bg-black/30 p-4 rounded-lg inline-block'>
             悩みがモヤモヤしている。 どう解決しようか。
           </p>

@@ -1,9 +1,9 @@
 // data/worryTypes.ts
 export const WorryTypes = {
-  motivation: {
-    id: "motivation",
-    title: "モチベーション",
-    message: "自分に自信がないの？沐浴に行こう！",
+  growth: {
+    id: "growth",
+    title: "自己成長",
+    message: "成長ばっかり考えてるみたいだけど、何か達成した？沐浴に行こう！",
     category: "self",
   },
   future: {
@@ -12,12 +12,14 @@ export const WorryTypes = {
     message: "将来なんて考えても何も生まれない！沐浴に行こう！",
     category: "self",
   },
-  growth: {
-    id: "growth",
-    title: "自己成長",
-    message: "成長ばっかり考えてるみたいだけど、何か達成した？沐浴に行こう！",
+
+  motivation: {
+    id: "motivation",
+    title: "モチベーション",
+    message: "自分に自信がないの？沐浴に行こう！",
     category: "self",
   },
+
   friendshipRelations: {
     id: "friendshipRelations",
     title: "友情関係",
