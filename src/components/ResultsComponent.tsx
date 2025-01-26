@@ -72,11 +72,9 @@ export default function ResultsComponent({
         </Card>
       </motion.div>
       <motion.div variants={itemVariants}>
-        <span className='text-lg'>
-          あなたにおすすめの沐浴は
-          <span className='font-semibold'>「{topWorry.mokuyoku}」</span>
-          です！
-        </span>
+        <p className='text-lg text-center'>あなたにおすすめの沐浴施設は</p>
+        <p className='font-semibold text-center'>「{topWorry.mokuyoku}」</p>
+
         <DisplayMokuyoku />
       </motion.div>
       <motion.div variants={itemVariants}>
