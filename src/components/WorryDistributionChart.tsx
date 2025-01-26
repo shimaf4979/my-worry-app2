@@ -28,6 +28,9 @@ interface Props {
   selectedEducationLevel: EducationLevel | "all";
 }
 
+// components/WorryDistributionChart.tsx
+// ... (既存のimport文は変更なし)
+
 export default function WorryDistributionChart({
   data,
   selectedEducationLevel,
@@ -73,17 +76,27 @@ export default function WorryDistributionChart({
             },
           ]
         : [
+            // WorryDistributionChart.tsx内の該当部分を修正
             {
               label: "1年生",
-              data: data.map((item) => item.year1),
+              data: data.map((item) =>
+                selectedEducationLevel === "other"
+                  ? 0
+                  : item.year1[selectedEducationLevel]
+              ),
               backgroundColor: YEAR_COLORS[1].bg,
               borderRadius: 4,
               barPercentage: 0.8,
               categoryPercentage: 0.9,
             },
+            // 他の年次も同様に修正
             {
               label: "2年生",
-              data: data.map((item) => item.year2),
+              data: data.map((item) =>
+                selectedEducationLevel === "other"
+                  ? 0
+                  : item.year2[selectedEducationLevel]
+              ),
               backgroundColor: YEAR_COLORS[2].bg,
               borderRadius: 4,
               barPercentage: 0.8,
@@ -91,7 +104,11 @@ export default function WorryDistributionChart({
             },
             {
               label: "3年生",
-              data: data.map((item) => item.year3),
+              data: data.map((item) =>
+                selectedEducationLevel === "other"
+                  ? 0
+                  : item.year3[selectedEducationLevel]
+              ),
               backgroundColor: YEAR_COLORS[3].bg,
               borderRadius: 4,
               barPercentage: 0.8,
@@ -99,7 +116,11 @@ export default function WorryDistributionChart({
             },
             {
               label: "4年生",
-              data: data.map((item) => item.year4),
+              data: data.map((item) =>
+                selectedEducationLevel === "other"
+                  ? 0
+                  : item.year4[selectedEducationLevel]
+              ),
               backgroundColor: YEAR_COLORS[4].bg,
               borderRadius: 4,
               barPercentage: 0.8,

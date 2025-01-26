@@ -12,38 +12,69 @@ async function generateChartData() {
 
   if (error) throw error;
 
-  return Object.entries(WorryTypes).map(([worryId, worry]) => ({
-    worryId,
-    worryTitle: worry.title,
-    undergraduate: data.filter(
+  return Object.entries(WorryTypes).map(([worryId, worry]) => {
+    // 学部生のデータ集計
+    const undergraduateData = data.filter(
       (r) => r.education_level === "undergraduate" && r.top_worry === worryId
-    ).length,
-    master: data.filter(
+    );
+
+    // 修士のデータ集計
+    const masterData = data.filter(
       (r) => r.education_level === "master" && r.top_worry === worryId
-    ).length,
-    doctor: data.filter(
+    );
+
+    // 博士のデータ集計
+    const doctorData = data.filter(
       (r) => r.education_level === "doctor" && r.top_worry === worryId
-    ).length,
-    other: data.filter(
+    );
+
+    // その他のデータ集計
+    const otherData = data.filter(
       (r) => r.education_level === "other" && r.top_worry === worryId
-    ).length,
-    year1: data.filter((r) => r.year_number === 1 && r.top_worry === worryId)
-      .length,
-    year2: data.filter((r) => r.year_number === 2 && r.top_worry === worryId)
-      .length,
-    year3: data.filter((r) => r.year_number === 3 && r.top_worry === worryId)
-      .length,
-    year4: data.filter((r) => r.year_number === 4 && r.top_worry === worryId)
-      .length,
-  }));
+    );
+
+    return {
+      worryId,
+      worryTitle: worry.title,
+      // 教育レベル別の合計
+      undergraduate: undergraduateData.length,
+      master: masterData.length,
+      doctor: doctorData.length,
+      other: otherData.length,
+      // 年次別の集計（教育レベルごと）
+      year1: {
+        undergraduate: undergraduateData.filter((r) => r.year_number === 1)
+          .length,
+        master: masterData.filter((r) => r.year_number === 1).length,
+        doctor: doctorData.filter((r) => r.year_number === 1).length,
+      },
+      year2: {
+        undergraduate: undergraduateData.filter((r) => r.year_number === 2)
+          .length,
+        master: masterData.filter((r) => r.year_number === 2).length,
+        doctor: doctorData.filter((r) => r.year_number === 2).length,
+      },
+      year3: {
+        undergraduate: undergraduateData.filter((r) => r.year_number === 3)
+          .length,
+        master: masterData.filter((r) => r.year_number === 3).length,
+        doctor: doctorData.filter((r) => r.year_number === 3).length,
+      },
+      year4: {
+        undergraduate: undergraduateData.filter((r) => r.year_number === 4)
+          .length,
+        master: masterData.filter((r) => r.year_number === 4).length,
+        doctor: doctorData.filter((r) => r.year_number === 4).length,
+      },
+    };
+  });
 }
 
-// キャッシュされたデータを取得する関数
 export async function getCachedChartData(): Promise<ChartData[]> {
   const now = Date.now();
   if (!cachedChartData || now - lastUpdateTime > UPDATE_INTERVAL) {
-    cachedChartData = await generateChartData();
+    cachedChartData = (await generateChartData()) as any;
     lastUpdateTime = now;
   }
-  return cachedChartData;
+  return cachedChartData as ChartData[];
 }

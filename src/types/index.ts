@@ -140,6 +140,27 @@ export interface UserResult {
   top_worry_score: number;
 }
 
+// export interface ChartData {
+//   worryId: string;
+//   worryTitle: string;
+//   undergraduate: number;
+//   master: number;
+//   doctor: number;
+//   other: number;
+//   year1: number;
+//   year2: number;
+//   year3: number;
+//   year4: number;
+// }
+
+// types/index.ts
+export interface YearData {
+  [key: string]: number; // インデックスシグネチャを追加
+  undergraduate: number;
+  master: number;
+  doctor: number;
+}
+
 export interface ChartData {
   worryId: string;
   worryTitle: string;
@@ -147,10 +168,10 @@ export interface ChartData {
   master: number;
   doctor: number;
   other: number;
-  year1: number;
-  year2: number;
-  year3: number;
-  year4: number;
+  year1: YearData;
+  year2: YearData;
+  year3: YearData;
+  year4: YearData;
 }
 
 // バリデーション用の型
