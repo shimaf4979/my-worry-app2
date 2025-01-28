@@ -128,163 +128,6 @@ const RecentResults = ({ results }: { results: UserResult[] }) => {
   );
 };
 
-// export default function StatisticsPage() {
-//   const [results, setResults] = useState<UserResult[]>([]);
-//   const [selectedEducationLevel, setSelectedEducationLevel] = useState<
-//     EducationLevel | "all"
-//   >("all");
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     fetchResults();
-//   }, []);
-
-//   const fetchResults = async () => {
-//     try {
-//       setIsLoading(true);
-//       setError(null);
-
-//       const { data, error: supabaseError } = await supabase
-//         .from("user_results")
-//         .select(
-//           `
-//           id,
-//           created_at,
-//           nickname,
-//           education_level,
-//           year_number,
-//           top_worry,
-//           top_worry_score
-//         `
-//         )
-//         .order("created_at", { ascending: false });
-
-//       if (supabaseError) {
-//         console.error("Supabase error:", supabaseError);
-//         throw supabaseError;
-//       }
-
-//       console.log("Raw fetched data:", data);
-
-//       setResults(data || []);
-//     } catch (error) {
-//       console.error("Error details:", error);
-//       setError("データの取得に失敗しました");
-//       setResults([]);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   const processResults = useMemo(() => {
-//     console.log("Processing results with length:", results.length);
-
-//     if (!Array.isArray(results) || results.length === 0) {
-//       return [];
-//     }
-
-//     const processedData = Object.entries(WorryTypes).map(([worryId, worry]) => {
-//       const counts = {
-//         worryId,
-//         worryTitle: worry.title,
-//         undergraduate: 0,
-//         master: 0,
-//         doctor: 0,
-//         other: 0,
-//         year1: 0,
-//         year2: 0,
-//         year3: 0,
-//         year4: 0,
-//       };
-
-//       results.forEach((result) => {
-//         if (result.top_worry === worryId) {
-//           if (selectedEducationLevel === "all") {
-//             const level = result.education_level as keyof typeof counts;
-//             counts[level]++;
-//           } else if (result.education_level === selectedEducationLevel) {
-//             if (result.year_number) {
-//               const yearKey =
-//                 `year${result.year_number}` as keyof typeof counts;
-//               counts[yearKey]++;
-//             }
-//           }
-//         }
-//       });
-
-//       return counts;
-//     });
-
-//     console.log("Processed data:", processedData);
-//     return processedData;
-//   }, [results, selectedEducationLevel]);
-
-//   return (
-//     <div className='w-full p-4'>
-//       <div className='max-w-full mx-auto space-y-6'>
-//         <Card className='p-4 overflow-hidden'>
-//           <div className='mb-6'>
-//             <h1 className='text-xl md:text-2xl font-bold mb-4'>
-//               みんなの悩み分布
-//             </h1>
-//             <div className='flex flex-wrap gap-2'>
-//               {educationOptions.map((option) => (
-//                 <motion.button
-//                   key={option.value}
-//                   onClick={() =>
-//                     setSelectedEducationLevel(
-//                       option.value as EducationLevel | "all"
-//                     )
-//                   }
-//                   className={`px-4 py-2 rounded-lg text-sm transition-all ${
-//                     selectedEducationLevel === option.value
-//                       ? "bg-blue-500 text-white shadow-lg"
-//                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-//                   }`}
-//                   whileHover={{ scale: 1.02 }}
-//                   whileTap={{ scale: 0.98 }}
-//                 >
-//                   {option.label}
-//                 </motion.button>
-//               ))}
-//             </div>
-//           </div>
-
-//           {isLoading ? (
-//             <div className='flex justify-center items-center h-[400px]'>
-//               <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500' />
-//             </div>
-//           ) : error ? (
-//             <div className='text-center text-red-500 py-8'>{error}</div>
-//           ) : processResults.length === 0 ? (
-//             <div className='text-center text-gray-500 py-8'>
-//               データがありません
-//             </div>
-//           ) : (
-//             <div className='w-full -mx-4'>
-//               <WorryDistributionChart
-//                 data={processResults}
-//                 selectedEducationLevel={selectedEducationLevel}
-//               />
-//             </div>
-//           )}
-//         </Card>
-
-//         <Card className='p-4'>
-//           <h2 className='text-lg md:text-xl font-bold mb-4'>
-//             最新の診断結果
-//             <span className='text-sm font-normal text-gray-500 ml-2'>
-//               (最新10件)
-//             </span>
-//           </h2>
-//           <RecentResults results={results} />
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// }
-
 export default function StatisticsPage() {
   const [chartData, setChartData] = useState<any[]>([]);
   const [recentResults, setRecentResults] = useState<UserResult[]>([]);
@@ -310,7 +153,7 @@ export default function StatisticsPage() {
         const chartJson = await chartResponse.json();
         setChartData(chartJson.data);
 
-        // 最新の結果を取得
+        // 最新10件を取得
         const recentResponse = await fetch("/api/recent-results");
         if (!recentResponse.ok) {
           throw new Error(
@@ -329,11 +172,8 @@ export default function StatisticsPage() {
       }
     };
 
+    // 初回データ取得
     fetchData();
-
-    // 定期的な更新（1分ごと）
-    const interval = setInterval(fetchData, 60000);
-    return () => clearInterval(interval);
   }, []);
 
   return (
