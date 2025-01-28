@@ -6,23 +6,34 @@ import {
   choiceTemplates,
 } from "@/data/questionTemplates";
 
-// 未使用の選択肢テキストを取得する関数
+// 未使用の選択肢テキストを取得する関数を修正
 const getUnusedChoiceText = (
   worryId: WorryType,
   usedChoiceTexts: Record<WorryType, Set<string>>
 ): string => {
   const allChoices = choiceTemplates[worryId];
-  const usedTexts = usedChoiceTexts[worryId] || new Set();
 
-  // まだ使用されていない選択肢を探す
-  const unusedChoices = allChoices.filter((choice) => !usedTexts.has(choice));
-
-  if (unusedChoices.length === 0) {
-    console.error("No unused choices available for", worryId);
-    return allChoices[0];
+  // usedChoiceTextsが未初期化の場合は初期化
+  if (!usedChoiceTexts[worryId]) {
+    usedChoiceTexts[worryId] = new Set();
   }
 
-  return unusedChoices[Math.floor(Math.random() * unusedChoices.length)];
+  // 使用可能な選択肢を取得
+  const unusedChoices = allChoices.filter(
+    (choice) => !usedChoiceTexts[worryId].has(choice)
+  );
+
+  // 使用可能な選択肢がない場合は、使用済みをリセット
+  if (unusedChoices.length === 0) {
+    usedChoiceTexts[worryId].clear();
+    return allChoices[Math.floor(Math.random() * allChoices.length)];
+  }
+
+  // ランダムに未使用の選択肢を選択
+  const selectedChoice =
+    unusedChoices[Math.floor(Math.random() * unusedChoices.length)];
+  usedChoiceTexts[worryId].add(selectedChoice);
+  return selectedChoice;
 };
 
 // 問題を生成する関数
@@ -31,13 +42,10 @@ const createQuestion = (
   worries: WorryType[],
   usedChoiceTexts: Record<WorryType, Set<string>>
 ): Question => {
-  const choices: Choice[] = worries.map((worryId) => {
-    const choiceText = getUnusedChoiceText(worryId, usedChoiceTexts);
-    return {
-      text: choiceText,
-      affects: [{ itemId: worryId }],
-    };
-  });
+  const choices: Choice[] = worries.map((worryId) => ({
+    text: getUnusedChoiceText(worryId, usedChoiceTexts),
+    affects: [{ itemId: worryId }],
+  }));
 
   return {
     id: template.id,
@@ -51,10 +59,7 @@ const createQuestion = (
 export const initializePreliminaryQuestions = (
   usedChoiceTexts: Record<WorryType, Set<string>>
 ): Question[] => {
-  // 予選テンプレートをシャッフル
-  const shuffledTemplates = shuffleArray([...preliminaryTemplates]);
-
-  return shuffledTemplates.map((template) =>
+  return preliminaryTemplates.map((template) =>
     createQuestion(
       template,
       template.validWorries as WorryType[],
@@ -68,10 +73,7 @@ export const prepareFinalQuestions = (
   topWorries: string[],
   usedChoiceTexts: Record<WorryType, Set<string>>
 ): Question[] => {
-  // 決勝テンプレートをシャッフル
-  const shuffledTemplates = shuffleArray([...finalTemplates]);
-
-  return shuffledTemplates.map((template) =>
+  return finalTemplates.map((template) =>
     createQuestion(
       template,
       shuffleArray([...(topWorries as WorryType[])]).slice(0, 4),

@@ -34,21 +34,16 @@ export default function GameComponent({
   onComplete,
 }: Props) {
   const [currentQuestion, setCurrentQuestion] = useState<any | null>(null);
-  const [selectedOrder, setSelectedOrder] = useState<any[]>([]);
+  const [selectedOrder, setSelectedOrder] = useState<number[]>([]);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  // 1. アニメーション用の状態を追加
   const [isAnimating, setIsAnimating] = useState(false);
-
-  // 2. キーを更新するための関数を追加
-  const getAnimationKey = () => {
-    return `${currentQuestion?.id}-${gameState.currentQuestion}`;
-  };
-
-  // GameComponent.tsx の useEffect 部分を修正
 
   // 初期化時に予選問題を準備
   useEffect(() => {
-    if (gameState.preliminaryQuestions.length === 0) {
+    if (
+      !gameState.preliminaryQuestions ||
+      gameState.preliminaryQuestions.length === 0
+    ) {
       const preliminaryQuestions = initializePreliminaryQuestions(
         gameState.usedChoiceTexts
       );
@@ -67,10 +62,9 @@ export default function GameComponent({
       return;
     }
 
-    // 決勝戦開始時に決勝問題を準備
     if (
       gameState.currentQuestion === 6 &&
-      gameState.finalQuestions.length === 0
+      (!gameState.finalQuestions || gameState.finalQuestions.length === 0)
     ) {
       const topWorries = getTopWorries(gameState.selectedAnswers);
       const finalQuestions = prepareFinalQuestions(
@@ -90,12 +84,16 @@ export default function GameComponent({
         ? gameState.preliminaryQuestions
         : gameState.finalQuestions;
 
+    if (!questions) return;
+
     const questionIndex =
       gameState.currentQuestion < 6
         ? gameState.currentQuestion
         : gameState.currentQuestion - 6;
 
-    setCurrentQuestion(questions[questionIndex]);
+    if (questions && questions[questionIndex]) {
+      setCurrentQuestion(questions[questionIndex]);
+    }
   }, [
     gameState.currentQuestion,
     gameState.preliminaryQuestions,
@@ -118,11 +116,10 @@ export default function GameComponent({
         setGameState((prev: any) => ({
           ...prev,
           currentQuestion: prev.currentQuestion + 1,
-          preliminaryRound: prev.currentQuestion < 5,
         }));
         setIsTransitioning(false);
         setIsAnimating(false);
-      }, 10); // 即時遷移のため短い時間に設定
+      }, 300);
     }
   };
 
@@ -131,7 +128,7 @@ export default function GameComponent({
     setSelectedOrder([]);
   };
 
-  const updateScores = (order: any[]) => {
+  const updateScores = (order: number[]) => {
     if (!currentQuestion) return;
 
     const scores = { ...gameState.selectedAnswers };
@@ -141,7 +138,8 @@ export default function GameComponent({
       const affects = currentQuestion.choices[choiceIndex].affects;
 
       affects.forEach(({ itemId }: { itemId: string }) => {
-        scores[itemId] = (scores[itemId] || 0) + points;
+        const currentScore = scores[itemId] || 0;
+        scores[itemId] = currentScore + points;
       });
     });
 
@@ -154,11 +152,14 @@ export default function GameComponent({
   const calculateFinalScores = (
     scores: Record<string, number>
   ): Record<string, number> => {
-    const maxScore = Math.max(...Object.values(scores));
-    const normalizedScores: Record<string, number> = {};
+    if (Object.keys(scores).length === 0) return {};
 
-    Object.entries(scores).forEach(([key, value]: [string, any]) => {
-      normalizedScores[key] = (value / maxScore) * 100;
+    const maxScore = Math.max(...Object.values(scores));
+    if (maxScore === 0) return scores;
+
+    const normalizedScores: Record<string, number> = {};
+    Object.entries(scores).forEach(([key, value]) => {
+      normalizedScores[key] = Math.round((value / maxScore) * 100);
     });
 
     return normalizedScores;
@@ -177,7 +178,7 @@ export default function GameComponent({
   return (
     <AnimatePresence mode='wait'>
       <motion.div
-        key={getAnimationKey()} // キーを動的に生成
+        key={`${currentQuestion.id}-${gameState.currentQuestion}`}
         variants={containerVariants}
         initial='initial'
         animate='animate'
@@ -215,7 +216,7 @@ export default function GameComponent({
           </div>
 
           <div className='space-y-3'>
-            {currentQuestion.choices.map((choice: any, index: any) => (
+            {currentQuestion.choices.map((choice: any, index: number) => (
               <motion.div
                 key={index}
                 variants={choiceVariants}
@@ -246,14 +247,6 @@ export default function GameComponent({
               </motion.div>
             ))}
           </div>
-          {/* 
-          <div className='mt-4 text-sm text-gray-500'>
-            {gameState.preliminaryRound ? (
-              <p>予選ラウンド: 全体的な傾向を把握します</p>
-            ) : (
-              <p>決勝ラウンド: より詳細な分析を行います</p>
-            )}
-          </div> */}
         </Card>
       </motion.div>
     </AnimatePresence>
