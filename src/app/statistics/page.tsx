@@ -107,22 +107,22 @@ const RecentResults = ({ results }: { results: UserResult[] }) => {
                     {result.year_number}年生
                   </span>
                 )}
-                <span className='text-sm'>
-                  {new Intl.DateTimeFormat("ja-JP", {
-                    // year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                  }).format(new Date(result.created_at))}
-                </span>
               </div>
             </div>
+            <p className=''>
+              {new Intl.DateTimeFormat("ja-JP", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              }).format(new Date(result.created_at))}
+            </p>
             <div className='flex items-center gap-1'>
-              <span className='font-semibold'>
+              <p className='font-semibold'>
                 {WorryTypes[result.top_worry as keyof typeof WorryTypes]?.title}
-              </span>
+              </p>
               に悩んでいます
             </div>
           </div>
