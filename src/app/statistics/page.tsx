@@ -57,7 +57,7 @@ const RecentResults = ({ results }: { results: UserResult[] }) => {
 
   return (
     <div className='space-y-3'>
-      {results.slice(0, 10).map((result) => (
+      {results.slice(0, 20).map((result) => (
         <motion.div
           key={result.id}
           initial={{ opacity: 0, y: 20 }}
@@ -107,6 +107,16 @@ const RecentResults = ({ results }: { results: UserResult[] }) => {
                     {result.year_number}年生
                   </span>
                 )}
+                <span className='text-sm'>
+                  {new Intl.DateTimeFormat("ja-JP", {
+                    // year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  }).format(new Date(result.created_at))}
+                </span>
               </div>
             </div>
             <div className='flex items-center gap-1'>
@@ -118,9 +128,9 @@ const RecentResults = ({ results }: { results: UserResult[] }) => {
           </div>
         </motion.div>
       ))}
-      {results.length > 10 && (
+      {results.length > 20 && (
         <div className='text-center text-gray-500 text-sm py-2'>
-          ※ 最新10件の結果のみ表示しています
+          ※ 最新20件の結果のみ表示しています
         </div>
       )}
     </div>

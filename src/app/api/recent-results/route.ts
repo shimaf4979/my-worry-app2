@@ -11,7 +11,7 @@ export async function GET() {
       .from("user_results")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(10);
+      .limit(20);
 
     if (error) throw error;
 
