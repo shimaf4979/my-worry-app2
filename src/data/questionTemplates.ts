@@ -2,7 +2,7 @@
 export const preliminaryTemplates = [
   {
     id: "p1",
-    text: "お祈りするとしたらどんな悩みを祈りますか？",
+    text: "今直近の悩みを順位づけてください。",
     type: "preliminary",
     validWorries: ["motivation", "wastedMoney", "livingCost", "health"],
   },
@@ -66,7 +66,7 @@ export const finalTemplates = [
   },
   {
     id: "f4",
-    text: "理想の状態に近づくために、まず取り組むべきことは？",
+    text: "ふとした時に思うことは？",
     type: "final",
   },
 ];
@@ -77,6 +77,7 @@ export const choiceTemplates: Record<string, string[]> = {
     "多方面に興味があるが、続けられない",
     "自分に自信がない",
     "やる気が出ても、すぐに飽きてしまう",
+    "モチベーションが続かない",
     "多方面に興味があるが、続けられない。",
     "自分に自信がない。",
     "やる気が出ても、すぐに飽きてしまう。",
@@ -85,6 +86,7 @@ export const choiceTemplates: Record<string, string[]> = {
     "将来がすごく心配である",
     "進路がよくわからない",
     "今の勉強が将来につながるのか心配",
+    "未来の自分がどうなっているか心配",
     "進路がよくわからない。",
     "今の勉強が将来につながるのか心配。",
     "長期的な目標設定をしがち。",

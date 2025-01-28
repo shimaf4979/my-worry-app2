@@ -56,27 +56,24 @@ export const slides: { [key: string]: SlideItem[] } = {
   ノーマネー沐浴: [
     {
       id: 1,
-      title: "プールサイドビュー",
-      desc: "贅沢な空間での寛ぎのひととき",
+      title: "全体像",
+      desc: "お金がないあなたのために",
       bgColor: "#2563eb",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/back1.JPG-htRfywm3YERZCIMD0HBi5W1kMgUu9p.jpeg",
+      imageUrl: "mokuyoku/kane1.webp",
     },
     {
       id: 2,
-      title: "リラックス空間",
-      desc: "心地よい環境でのくつろぎ",
+      title: "風景",
+      desc: "お金がなくてもいいんだよ、それが人生さ",
       bgColor: "#3b82f6",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/back1.JPG-htRfywm3YERZCIMD0HBi5W1kMgUu9p.jpeg",
+      imageUrl: "mokuyoku/kane2.webp",
     },
     {
       id: 3,
-      title: "プレミアムエリア",
-      desc: "特別な時間をお過ごしください",
+      title: "",
+      desc: "どうにかなるんだよ、時に委ねよう",
       bgColor: "#60a5fa",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/back1.JPG-htRfywm3YERZCIMD0HBi5W1kMgUu9p.jpeg",
+      imageUrl: "mokuyoku/kane3.webp",
     },
   ],
 };
