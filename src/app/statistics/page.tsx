@@ -5,7 +5,6 @@ import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import WorryDistributionChart from "@/components/WorryDistributionChart";
-import { supabase } from "@/lib/supabase";
 import { WorryTypes } from "@/data/worryTypes";
 import type { UserResult, EducationLevel } from "@/types";
 import { EDUCATION_LEVEL_LABELS } from "@/constants/labels";

@@ -8,7 +8,7 @@ export const preliminaryTemplates = [
   },
   {
     id: "p2",
-    text: "人と関わるときの優先度は？",
+    text: "人と関わるとき思うことは？",
     type: "preliminary",
     validWorries: [
       "friendshipRelations",

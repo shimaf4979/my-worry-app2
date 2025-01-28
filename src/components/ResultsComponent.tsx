@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { WorryTypes } from "@/data/worryTypes";
 import { TwitterShareButton } from "./TwitterShareButton";
 import DisplayMokuyoku from "./DisplayMokuyoku";
+import { slides } from "@/data/SlideItem";
 interface Props {
   scores: Record<string, number>;
   userInfo: any;
@@ -72,10 +73,10 @@ export default function ResultsComponent({
         </Card>
       </motion.div>
       <motion.div variants={itemVariants}>
-        <p className='text-lg text-center'>あなたにおすすめの沐浴施設は</p>
+        <p className='text-lg text-center'>あなたにおすすめの沐浴施設は(β版)</p>
         <p className='font-semibold text-center'>「{topWorry.mokuyoku}」</p>
 
-        <DisplayMokuyoku />
+        <DisplayMokuyoku slides={slides[topWorry.mokuyoku]} />
       </motion.div>
       <motion.div variants={itemVariants}>
         <Card className='p-4'>

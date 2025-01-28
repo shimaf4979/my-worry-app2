@@ -11,34 +11,11 @@ interface SlideItem {
   imageUrl: string;
 }
 
-const slides: SlideItem[] = [
-  {
-    id: 1,
-    title: "プールサイドビュー",
-    desc: "贅沢な空間での寛ぎのひととき",
-    bgColor: "#2563eb",
-    imageUrl:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/back1.JPG-htRfywm3YERZCIMD0HBi5W1kMgUu9p.jpeg",
-  },
-  {
-    id: 2,
-    title: "リラックス空間",
-    desc: "心地よい環境でのくつろぎ",
-    bgColor: "#3b82f6",
-    imageUrl:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/back1.JPG-htRfywm3YERZCIMD0HBi5W1kMgUu9p.jpeg",
-  },
-  {
-    id: 3,
-    title: "プレミアムエリア",
-    desc: "特別な時間をお過ごしください",
-    bgColor: "#60a5fa",
-    imageUrl:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/back1.JPG-htRfywm3YERZCIMD0HBi5W1kMgUu9p.jpeg",
-  },
-];
+interface CarouselProps {
+  slides: SlideItem[];
+}
 
-export default function Carousel() {
+export default function Carousel({ slides }: CarouselProps) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });

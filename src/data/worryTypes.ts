@@ -24,7 +24,7 @@ export const WorryTypes = {
     message:
       "友達いたんだ！よかった。いるだけマシだよ。\n気分転換に以下の沐浴に行こう！",
     category: "others",
-    mokuyoku: "オーケストラ沐浴",
+    mokuyoku: "リフレッシュ沐浴",
   },
   loveRelations: {
     id: "loveRelations",
@@ -32,7 +32,7 @@ export const WorryTypes = {
     message:
       "彼女/彼氏いなくて残念だね！でも修羅の道を選んだのは自分じゃん！\n以下の沐浴に行こう！",
     category: "others",
-    mokuyoku: "観覧車沐浴",
+    mokuyoku: "リフレッシュ沐浴",
   },
   comparison: {
     id: "comparison",
@@ -40,7 +40,7 @@ export const WorryTypes = {
     message:
       "他人とばかり比較してるけど、自分のこと見えてる？\n気分転換に以下の沐浴に行こう！",
     category: "others",
-    mokuyoku: "観覧車沐浴",
+    mokuyoku: "リフレッシュ沐浴",
   },
   livingCost: {
     id: "livingCost",
@@ -48,14 +48,14 @@ export const WorryTypes = {
     message:
       "お疲れ様です。\n見直せる箇所を探すために、以下の沐浴に行きましょう。",
     category: "money",
-    mokuyoku: "コワーキング(社畜)沐浴",
+    mokuyoku: "ノーマネー沐浴",
   },
   wastedMoney: {
     id: "wastedMoney",
     title: "浪費癖",
     message: "お金なくなったら自己責任だよ！\n以下の沐浴に行こう！",
     category: "money",
-    mokuyoku: "コワーキング(社畜)沐浴",
+    mokuyoku: "ノーマネー沐浴",
   },
   freeTime: {
     id: "freeTime",
@@ -79,7 +79,7 @@ export const WorryTypes = {
     message:
       "健康を意識する君は素晴らしい。理系の鏡だ。\n健康のために以下の沐浴に行こう！",
     category: "life",
-    mokuyoku: "コワーキング(社畜)沐浴",
+    mokuyoku: "リフレッシュ沐浴",
   },
 } as const;
 
