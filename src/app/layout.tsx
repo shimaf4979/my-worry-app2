@@ -39,16 +39,31 @@ export const metadata: Metadata = {
 // }
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='ja'>
+    <html lang="ja">
       <head>
         <link
-          href='https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap'
-          rel='stylesheet'
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+          rel="stylesheet"
         />
       </head>
       <body>
         <RootLayout>{children}</RootLayout>
       </body>
+      <script
+        data-noptimize="1"
+        data-cfasync="false"
+        data-wpfc-render="false"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function () {
+                var script = document.createElement("script");
+                script.async = 1;
+                script.src = 'https://emrld.cc/NDQzMzIw.js?t=443320';
+                document.head.appendChild(script);
+            })();
+          `,
+        }}
+      />
     </html>
   );
 }
